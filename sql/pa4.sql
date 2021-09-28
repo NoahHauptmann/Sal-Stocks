@@ -1,0 +1,31 @@
+-- create database
+DROP DATABASE IF EXISTS CSCI201L_Assignment4;
+CREATE DATABASE CSCI201L_Assignment4;
+USE CSCI201L_Assignment4;
+
+CREATE TABLE users (
+	userID INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+    username VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    balance DOUBLE NOT NULL
+);
+
+CREATE TABLE favorites (
+	favoritesID INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+	userID INT NOT NULL,
+    stockID VARCHAR(255) NOT NULL,
+    FOREIGN KEY fk1(userID) REFERENCES users(userID)
+);
+
+CREATE TABLE portfolio (
+	portfolioID INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+	userID INT NOT NULL,
+    stockID VARCHAR(255) NOT NULL,
+    quantity INT NOT NULL,
+    purchasePrice DOUBLE NOT NULL,
+    purchaseTime DATETIME NOT NULL,
+    FOREIGN KEY fk1(userID) REFERENCES users(userID)
+);
+
+
