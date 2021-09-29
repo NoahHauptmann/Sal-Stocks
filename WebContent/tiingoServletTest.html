@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+	function displayResults(){
+		$.ajax({
+			  url: "/src/TiingoServlet",
+			  data: {
+			    company: document.search.company.value
+			  },
+			  success: function( result ) {
+			    $( "#searchresults" ).html("hello");
+			  }
+			});
+	}
+</script>
+</head>
+<body>
+	<form method="GET" action="./TiingoServlet">
+		<input type="text" name="company"> TICKER
+		<input type="submit" name="submit" value="Submit">
+	</form>
+	<div id="searchresults"></div>
+</body>
+</html>

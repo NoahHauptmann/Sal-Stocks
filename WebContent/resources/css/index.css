@@ -1,25 +1,41 @@
 @charset "UTF-8";
+*{
+	font-family: Arial, Helvetica, sans-serif;
+}
+#logo{
+	margin-left: 10px;
+}
+.green{
+	color: green;
+}
+.red{
+	color: red;
+}
+.navborder{
+	border: 1px white solid;
+	border-radius: 5px;
+}
 header {
-	height: 30px;
+	height: 60px;
 	width: 100%;
 	background-color: blue;
 	color: white;
-	padding: 15px;
+	padding: 0px 15px;
 	display: flex;
 	align-items: center;
 	flex-wrap: wrap;
 }
 
 nav{
-	display: flex;
-	justify-content:center;
-	align-items: center;
+	display: block;
+	text-align: right;
+	padding-right: 5px 15px 5px 5px;
 	flex-grow: 1;
+	margin-right: 10px;
 }
 nav span{
 	padding: 10px;
-	align-self: center;
-	justi
+	display: inline-block;
 }
 nav span:hover{
 	border: 1x white solid;
@@ -27,21 +43,275 @@ nav span:hover{
 	cursor: pointer;
 }
 
-h1{
+#AppTitle{
 	text-align: center;
+	margin: auto auto;
+	font-weight:bold;
+	letter-spacing: .01px;
+	font-size: 70px;
+}
+.title{
+	width: 100%;
+	height: 300px;
+	display: flex;
+	align-items: center;
+}
+
+#GoogleDiv{
+	width: 120px;
+	margin: auto;
+	margin-top: 30px;
 }
 
 
-#formdiv {
-	border: 1px blue solid;
-	border-radius: 5px;
+#SearchForm {
+	width: 200px;
+    height: 40px;
+    border: 1px purple solid;
+    border-radius: 85px;
+	margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#SearchForm form{
 	padding: 5px;
-	width: 180px;
-	margin: auto;
-}
-form{
-	margin: auto;
+	margin: auto auto;
 	display: flex;
 	justify-content: space-around;
 }
+#SearchForm input{
+    border: none;
+}
+#SearchForm button{
+    border: none;
+    background-color: none;
+}
+/*h3{
+	text-align: center;
+	margin: auto;
+} */
+
+/* FAVORITES CSS */
+.favorites {
+	height: 100px;
+	width: 60%;
+	margin: 15px auto;
+	display: flex;
+	justify-content: center;
+	border: 1px grey solid;
+	border-radius: 1px;
+}
+.left {
+	flex-grow: 1;
+	text-align: left;
+	padding-left: 10px;
+}
+.right {
+	flex-grow: 1;
+	text-align: right;
+	padding-right: 10px;
+	padding-top: 10px;
+}
+
+/*PORTFOLIO CSS  */
+.portElement {
+    height: 220px;
+    width: 65%;
+    margin: 15px auto;
+    border: 1px black solid;
+}
+.port1{
+    width: 100%;
+    height: 15%;
+    background-color: gainsboro;
+}
+.portticker{
+    height: 75%;
+    margin: auto;
+    padding-top: 7px;
+}
+.port1 span{
+    padding: 15px;
+}
+.port2{
+    width: 100%;
+    height: 50%;
+    display: flex;
+}
+.portcol{
+    flex-grow: 1;
+    display: flex;
+}
+.portleft{
+    text-align: left;
+    flex-grow: 1;
+    padding:0 10px;
+}
+.portright{
+    text-align: right;
+    flex-grow: 1;
+    padding:0 10px;
+}
+.port3{
+    width: 100%;
+    height: 35%;
+    background-color: gainsboro;
+}
+.port3 form{
+    width:80%;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-top: 5px;
+}
+.portradio{
+    padding: 0px 5px;
+    display: inline;
+}
+
+/* GUEST SEARCH CSS  */
+.center{
+    text-align: center;
+}
+.guestName{
+    color: grey;
+}
+.guestResults{
+    border-top: 1px darkmagenta solid;
+    width: 65%;
+    margin: auto;
+    padding-top: 30px;
+}
+.guestStats{
+    list-style-type: none;
+    text-align: center;
+    margin-bottom: 20px;
+
+}
+
+/* LOGIN/SIGNUP CSS  */
+
+.signlog{
+    width: 75%;
+    margin: auto;
+    height: 500px;
+    display: flex;
+    align-content: center;
+    justify-content: space-evenly;
+}
+.SLcolumn{
+    flex-grow: 1;
+    width: 40%;
+    margin: 15px;
+}
+.SLForm{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+#agreelabel{
+    flex-grow: 1;
+}
+#agree{
+    margin-right: 70px;
+}
+.SLbutton{
+    background-color: darkred;
+    border: 1px darkred solid;
+    border-radius: 5px;
+    color: white;
+    height: 40px;
+    margin: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.signlog input{
+    height: 35px;
+    margin: 5px;
+}
+.fa-user-plus{
+    margin: auto 10px;
+}
+.SLcheck{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* USER SEARCH CSS */
+.UserSearch{
+    width: 65%;
+    margin: auto;
+}
+.USHeader{
+    height: 150px;
+    width: 100%;
+    display: flex;
+}
+.USTicker{
+    display: inline;
+}
+.star{
+    position: relative;
+    bottom: 3px;
+}
+.USName{
+    color: grey;
+}
+.USHeaderLeft{
+    height: 100%;
+    text-align: left;
+    flex-grow: 2;
+}
+.USHeaderRight{
+    height: 100%;
+    text-align: right;
+    flex-grow: 1;
+}
+.USBuyButton{
+    background-color: green;
+    color: white;
+    margin-top: 5px;
+    width: 55px;
+    height: 28px;
+    border: 1px white solid;
+    border-radius: 5px;
+}
+.USMarketDiv{
+    width: 120px;
+    margin: auto;
+}
+.MarketState{
+    text-align: center;
+    margin-top: 10px;
+}
+.Open{
+    background-color: lightgreen;
+}
+.Closed{
+    background-color: lightcoral;
+}
+.UserResults{
+    display: flex;
+    border-top: 1px purple solid;
+}
+.UserStatsCol{
+    flex-grow: 1;
+    display: flex;
+}
+.UserStatsLeft{
+    text-align: left;
+    flex-grow: 2;
+    margin: 15px;
+}
+.UserStatsRight{
+    text-align: right;
+    flex-grow: 1;
+    margin: 15px;
+}
+
 

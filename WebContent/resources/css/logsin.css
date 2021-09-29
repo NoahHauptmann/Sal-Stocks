@@ -1,1 +1,48 @@
 @charset "UTF-8";
+.signlog{
+    width: 75%;
+    margin: auto;
+    height: 500px;
+    display: flex;
+    align-content: center;
+    justify-content: space-evenly;
+}
+.SLcolumn{
+    flex-grow: 1;
+    width: 50%;
+    margin: 15px;
+}
+.SLForm{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+#agreelabel{
+    flex-grow: 1;
+}
+#agree{
+    margin-right: 70px;
+}
+.SLbutton{
+    background-color: darkred;
+    border: 1px darkred solid;
+    border-radius: 5px;
+    color: white;
+    height: 40px;
+    margin: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.signlog input{
+    height: 35px;
+    margin: 5px;
+}
+.fa-user-plus{
+    margin: auto 10px;
+}
+.SLcheck{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

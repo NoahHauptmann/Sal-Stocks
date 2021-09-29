@@ -1,0 +1,48 @@
+@charset "UTF-8";
+*{
+	font-family: Arial, Helvetica, sans-serif;
+}
+header {
+	height: 40px;
+	width: 100%;
+	background-color: blue;
+	color: white;
+	padding: 0px 15px;
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+}
+
+nav{
+	display: block;
+	text-align: right;
+	padding-right: 15px;
+	flex-grow: 1;
+}
+nav span{
+	padding: 10px;
+	display: inline-block;
+}
+nav span:hover{
+	border: 1x white solid;
+	border-radius: 3px;
+	cursor: pointer;
+}
+.signlog{
+    width: 95%;
+    margin: auto;
+    height: 500px;
+    display: flex;
+    align-content: center;
+    justify-content: space-evenly;
+}
+.column{
+    flex-grow: 1;
+    width: 40%;
+    height: 100%;
+}
+form{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}

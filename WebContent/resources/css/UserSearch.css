@@ -1,0 +1,69 @@
+@charset "UTF-8";
+.center{
+    text-align: center;
+}
+.UserSearch{
+    width: 65%;
+    margin: auto;
+}
+.USHeader{
+    height: 150px;
+    width: 100%;
+    display: flex;
+}
+.USTicker{
+    display: inline;
+}
+.star{
+    position: relative;
+    bottom: 3px;
+}
+.USName{
+    color: grey;
+}
+.USHeaderLeft{
+    height: 100%;
+    text-align: left;
+    flex-grow: 2;
+}
+.USHeaderRight{
+    height: 100%;
+    text-align: right;
+    flex-grow: 1;
+}
+.USBuyButton{
+    background-color: green;
+    color: white;
+    margin-top: 5px;
+    width: 55px;
+    height: 28px;
+    border: 1px white solid;
+    border-radius: 5px;
+}
+.USMarketDiv{
+    width: 100px;
+    margin: auto;
+}
+.MarketState{
+    background-color:lightgreen; 
+    text-align: center;
+    margin-top: 10px;
+}
+.UserResults{
+    display: flex;
+    border-top: 1px purple solid;
+}
+.UserStatsCol{
+    flex-grow: 1;
+    display: flex;
+}
+.UserStatsLeft{
+    text-align: left;
+    flex-grow: 2;
+    margin: 15px;
+}
+.UserStatsRight{
+    text-align: right;
+    flex-grow: 1;
+    margin: 15px;
+}

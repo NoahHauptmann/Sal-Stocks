@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Log/Sign</title>
+<link rel="stylesheet" href="resources/css/logsin.css">
+<script src="https://kit.fontawesome.com/2124adb6e5.js" crossorigin="anonymous"></script>
+<script>
+    function hello(){
+        alert('hello!');
+    }
+</script>
+</head>
+<body>
+    <div class="signlog">
+        <div id="login" class="SLcolumn">
+            <form action="" name="login" class="SLForm">
+                <h3>Login</h3>
+                <label for="user">Username</label>
+                <input type="text" id="user">
+                <label for="pw">Password</label>
+                <input type="password" id="pw">
+                <div class="SLbutton" onclick="hello()">
+                    <i class="fas fa-sign-in-alt"></i>
+                    <input type="button" class="SLbutton" value="Sign in">
+                </div>
+                    
+            </form>
+            <!-- <div id="google"><a href="">Sign In with Google</a></div> -->
+            <div id="loginmessage"></div>
+        </div>
+        <div id="signup" class="SLcolumn">
+            <form action="" name="signup" class="SLForm">
+                <h3>Sign Up</h3>
+                <label for="email">Email</label>
+                <input type="email" id="email">
+                <label for="user">Username</label>
+                <input type="text" id="user">
+                <label for="pw">Password</label>
+                <input type="password" id="pw">
+                <label for="pw2">Confirm Password</label>
+                <input type="password" id="pw2">
+                <div class="SLcheck">
+                    <span for="agree" id="agreelabel">I have read and agreed to all terms and conditions of SalStocks</span>
+                    <input type="checkbox" id="agree" required>
+                </div>
+                <div class="SLbutton" onclick="hello()">
+                    <i class="fas fa-user-plus"></i>
+                    <input type="button" class="SLbutton" value="Create Account"> 
+                </div>
+            </form>   
+            <div id="signupmessage"></div>  
+        </div>
+    </div>
+</body>
+</html>

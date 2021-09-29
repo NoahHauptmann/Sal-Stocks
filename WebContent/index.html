@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Sal Stocks</title>
+<link rel="stylesheet" href="./resources/css/index.css">
+<meta name="google-signin-client_id" content="233225572346-ofgfurs97ve06ofu837a6i5h7n04d5om.apps.googleusercontent.com">
+<script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
+<script src="https://kit.fontawesome.com/2124adb6e5.js" crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+	function initialSignOut(){
+		gapi.auth2.getAuthInstance().signOut();
+		auth2.signOut().then(function () {
+		      console.log('User signed out.');
+		    });
+		$.ajax({
+			url: "LogoutServlet",
+			data: {
+
+			},
+			dataType: 'json',
+			success: function( result ) {
+			}
+		});
+	}
+
+	function onSignIn(googleUser) {
+	  var profile = googleUser.getBasicProfile();
+	  var id = profile.getId();
+	  var name = profile.getName();
+	  var email = profile.getEmail();
+	  $.ajax({
+			url: "SignupServlet",
+			data: {
+				email: email,
+				username: name,
+				password: "google",
+				password2: "google"
+			},
+			dataType: 'json',
+			success: function( result ) {
+				if(result.gExists){
+					$.ajax({
+						  url: "LoginServlet",
+						  data: {
+						    username: name,
+						    password: "google"
+						  },
+						  dataType: 'json',
+						  success: function( result ) {
+							  if(result.valid){
+								  document.getElementById("favnav").style.display = "inline";
+									document.getElementById("portnav").style.display = "inline";
+									document.getElementById("logoutnav").style.display = "inline";
+									document.getElementById("signupnav").style.display = "none";
+									document.getElementById("homepage").style.display = "block";
+									document.getElementById("loginsignup").style.display = "none";
+									document.getElementById("searchresults").style.display = "none";
+									document.getElementById("favoritesresults").style.display = "none";
+									document.getElementById("portfolioresults").style.display = "none";
+									document.getElementById("favnav").classList.remove("navborder");
+									document.getElementById("homenav").classList.add("navborder");
+									document.getElementById("signupnav").classList.remove("navborder");
+									document.getElementById("portnav").classList.remove("navborder");
+									alert(result.message);
+									document.getElementById("GoogleDiv").style.display = "none";
+							  }
+							  else{
+								  alert('FAILED! A non google account has already been made with that email.');
+								  initialSignOut();
+							  }
+							  
+						  }
+						});
+				}
+				
+				if(result.valid){
+					document.getElementById("favnav").style.display = "inline";
+					document.getElementById("portnav").style.display = "inline";
+					document.getElementById("logoutnav").style.display = "inline";
+					document.getElementById("signupnav").style.display = "none";
+					document.getElementById("homepage").style.display = "block";
+					document.getElementById("loginsignup").style.display = "none";
+					document.getElementById("searchresults").style.display = "none";
+					document.getElementById("favoritesresults").style.display = "none";
+					document.getElementById("portfolioresults").style.display = "none";
+					document.getElementById("favnav").classList.remove("navborder");
+					document.getElementById("homenav").classList.add("navborder");
+					document.getElementById("signupnav").classList.remove("navborder");
+					document.getElementById("portnav").classList.remove("navborder");
+					document.getElementById("GoogleDiv").style.display = "none";
+					alert(result.message);
+				}	
+				
+			}
+			});
+	  
+	 
+	}
+	function signOut() {
+	    var auth2 = gapi.auth2.getAuthInstance();
+	    auth2.signOut().then(function () {
+	      console.log('User signed out.');
+	    });
+	    logout();
+	  }
+	function test(){
+	}
+	function hello(){
+        login();
+    }
+	function hello2(){
+		signup();
+	}
+	function portBuySell(tick, price){
+		var choice = document.querySelector('input[name="radiobuysell"]:checked').value; //https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelector
+		var quantity = document.getElementById(tick).value;
+		if(choice === "buy"){
+			buy(tick, price, quantity);
+		}
+		else{
+			sell(tick, price, quantity);
+		}
+	}
+	function buySearch(tick, price){
+		var x = document.cookie;
+		var quant = document.getElementById("Searchquantity").value;
+		var id;
+		if(x.length === 37){
+			id = x.substring(19,20);
+		}
+		else{
+			id = x.substring(3,4);;
+		}
+		$.ajax({
+		  url: "BuyServlet",
+		  data: {
+		   userID: id,
+		   company: tick,
+		   quantity: document.getElementById("Searchquantity").value,
+		   currPrice: price
+		  },
+		  dataType: 'text',
+		  success: function( result ) {
+			  alert(result);
+		  }
+		});
+
+	}
+	function buy(tick, price, quant){
+		var x = document.cookie;
+		var id;
+		if(x.length === 37){
+			id = x.substring(19,20);
+		}
+		else{
+			id = x.substring(3,4);;
+		}
+		$.ajax({
+		  url: "BuyServlet",
+		  data: {
+		   userID: id,
+		   company: tick,
+		   quantity: quant,
+		   currPrice: price
+		  },
+		  dataType: 'text',
+		  success: function( result ) {
+			  alert(result);
+			  displayPortfolio();
+		  }
+		});
+
+	}
+	function sell(tick, price, quant){
+		var x = document.cookie;
+		var id;
+		if(x.length === 37){
+			id = x.substring(19,20);
+		}
+		else{
+			id = x.substring(3,4);;
+		}
+		$.ajax({
+		  url: "SellServlet",
+		  data: {
+		   userID: id,
+		   company: tick,
+		   quantity: quant,
+		   currPrice: price
+		  },
+		  dataType: 'text',
+		  success: function( result ) {
+			  alert(result);
+			  displayPortfolio();
+		  }
+		});
+
+	}
+	function favoriteToggle(){
+		if(document.getElementById("USStar").classList.contains("fa")){
+			favorite();
+		}
+		else{
+			unfavorite();
+		}
+	}
+	function favorite(){
+		var x = document.cookie;
+		var id;
+		if(x.length === 37){
+			id = x.substring(19,20);
+		}
+		else{
+			id = x.substring(3,4);;
+		}
+		var company1 = document.getElementById("USTick").innerHTML;
+		$.ajax({
+		  url: "FavoriteServlet",
+		  data: {
+		   userID: id,
+		   company: company1
+		  },
+		  dataType: 'text',
+		  success: function( result ) {
+			  alert(result);
+			  document.getElementById("USStar").classList.replace("fa","fas");
+			  document.getElementById("USStar").classList.replace("fa-star-o","fa-star");
+		  }
+		});
+	}
+	function unfavorite(){
+		var x = document.cookie;
+		var id;
+		if(x.length === 37){
+			id = x.substring(19,20);
+		}
+		else{
+			id = x.substring(3,4);;
+		}
+		var company1 = document.getElementById("USTick").innerHTML;
+		$.ajax({
+		  url: "UnfavoriteServlet",
+		  data: {
+		   userID: id,
+		   company: company1
+		  },
+		  dataType: 'text',
+		  success: function( result ) {
+			  alert(result);
+			  document.getElementById("USStar").classList.replace("fas","fa");
+			  document.getElementById("USStar").classList.replace("fa-star","fa-star-o");
+		  }
+		});
+	}
+	function login(){
+		$.ajax({
+		  url: "LoginServlet",
+		  data: {
+		    username: document.login.user.value,
+		    password: document.login.pw.value
+		  },
+		  dataType: 'json',
+		  success: function( result ) {
+			  if(result.valid){
+				  document.getElementById("favnav").style.display = "inline";
+					document.getElementById("portnav").style.display = "inline";
+					document.getElementById("logoutnav").style.display = "inline";
+					document.getElementById("signupnav").style.display = "none";
+					document.getElementById("homepage").style.display = "block";
+					document.getElementById("loginsignup").style.display = "none";
+					document.getElementById("searchresults").style.display = "none";
+					document.getElementById("favoritesresults").style.display = "none";
+					document.getElementById("portfolioresults").style.display = "none";
+					document.getElementById("favnav").classList.remove("navborder");
+					document.getElementById("homenav").classList.add("navborder");
+					document.getElementById("signupnav").classList.remove("navborder");
+					document.getElementById("portnav").classList.remove("navborder");
+					document.getElementById("GoogleDiv").style.display = "none";
+			  }
+			  alert(result.message);
+		  }
+		});
+		}
+	function signup(){
+		var re = /\S+@\S+\.\S+/;https://stackoverflow.com/questions/46155/how-to-validate-an-email-address-in-javascript
+		if(!re.test(document.signup.email.value)){
+			alert('Invalid. Please enter a valid email.');
+			return;
+		}
+		if(!(document.signup.agree.checked)){
+			alert('Invalid. Please agree to our terms & conditions.');
+			return;
+		}
+		$.ajax({
+		url: "SignupServlet",
+		data: {
+			email: document.signup.email.value,
+			username: document.signup.signuser.value,
+			password: document.signup.signpw.value,
+			password2: document.signup.pw2.value
+		},
+		dataType: 'json',
+		success: function( result ) {
+			
+			alert(result.message);
+			if(result.valid){
+				document.getElementById("favnav").style.display = "inline";
+				document.getElementById("portnav").style.display = "inline";
+				document.getElementById("logoutnav").style.display = "inline";
+				document.getElementById("signupnav").style.display = "none";
+				document.getElementById("homepage").style.display = "block";
+				document.getElementById("loginsignup").style.display = "none";
+				document.getElementById("searchresults").style.display = "none";
+				document.getElementById("GoogleDiv").style.display = "none";
+				document.getElementById("favoritesresults").style.display = "none";
+				document.getElementById("portfolioresults").style.display = "none";
+				document.getElementById("favnav").classList.remove("navborder");
+				document.getElementById("homenav").classList.add("navborder");
+				document.getElementById("signupnav").classList.remove("navborder");
+				document.getElementById("portnav").classList.remove("navborder");
+			}	
+		}
+		});
+	}
+	function logout(){
+		if(gapi.auth2.getAuthInstance().isSignedIn.get()){
+			var auth2 = gapi.auth2.getAuthInstance();
+		    auth2.signOut().then(function () {
+		      console.log('User signed out.');
+		    });
+		}
+		$.ajax({
+			url: "LogoutServlet",
+			data: {
+
+			},
+			dataType: 'json',
+			success: function( result ) {
+				alert("Logged out!");
+				document.getElementById("favnav").style.display = "none";
+				document.getElementById("portnav").style.display = "none";
+				document.getElementById("logoutnav").style.display = "none";
+				document.getElementById("signupnav").style.display = "inline";
+				document.getElementById("homepage").style.display = "block";
+				document.getElementById("loginsignup").style.display = "none";
+				document.getElementById("searchresults").style.display = "none";
+				document.getElementById("favoritesresults").style.display = "none";
+				document.getElementById("portfolioresults").style.display = "none";
+				document.getElementById("GoogleDiv").style.display = "block";
+			}
+		});
+	}
+	function displayResults(){
+		var json1;
+		var x = document.cookie;
+		
+		$.ajax({
+		  url: "TiingoServlet",
+		  data: {
+		    company: document.search.company.value
+		  },
+		  dataType: 'json',
+		  success: function( result ) {
+			document.getElementById("homepage").style.display = "none";
+			document.getElementById("searchresults").style.display = "block";
+			if(x == "" || x.length == 15){
+				$( "#searchresults" ).html(
+					"<h1 class=\"guestTick center\">"+result.ticker+"</h1>"+
+					"    <h1 class=\"guestName center\">"+result.name+"</h1>"+
+					"    <h5 class=\"guestExchange center\">"+result.exchangeCode+"</h5><br>"+
+					"    <h5 class=\"center\">Summary</h5>"+
+					"    <div class=\"guestResults\">"+
+					"        <div class=\"guestStats\">"+
+					"            <p>High Price: "+result.high+"</p>"+
+					"            <p>Low Price: "+result.low+"</p>"+
+					"            <p>Open Price: "+result.open+"</p>"+
+					"            <p>Close: "+result.close+"</p>"+
+					"            <p>Volume: "+result.volume+"</p>"+
+					"        </div><br>"+
+					"        <h4 class=\"center\">Company's Description</h4>"+
+					"        <p>Start Date: "+result.startDate+"</p>"+
+					"        <p>"+result.description+"</p>"+
+					"    </div>"
+				);
+			}
+			else{
+				var id;
+				if(x.length === 37){
+					id = x.substring(19,20);
+				}
+				else{
+					id = x.substring(3,4);;
+				}
+				var starclass = "fa fa-star-o";
+				var tick = document.search.company.value;
+				$.ajax({
+				  url: "GetFavorites",
+				  data: {
+				   userID: id,
+				  },
+				  dataType: 'json',
+				  async: false,
+				  success: function( result ) {
+					  var stocks = result.fv;
+					  for(var i=0; i<stocks.length; i++){
+						  var curr = stocks[i];
+						  if(curr.ticker === tick){
+							  starclass = "fas fa-star";
+						  }
+					  }
+				  }
+				});
+				var change = result.last - result.prevClose;
+				var pct = change*100 / result.prevClose
+				var ask = result.askPrice;
+				var dir="";
+				var color="";
+				var mid = result.mid;
+				if(mid === null || mid === "null"){
+					mid = "-"
+				}
+				if(change < 0){
+					color = "red";
+					dir = "fas fa-caret-down";
+				}
+				else{
+					color="green";
+					dir="fas fa-caret-up";
+				}
+				if(ask == 0 || ask == null){
+					$( "#searchresults" ).html(
+							'<div class="UserSearch">'+
+							'        <div class="USHeader">'+
+							'            <div class="USHeaderLeft">'+
+							'                <h2 class="USTicker" id="USTick">'+result.ticker+'</h2>'+
+							'                <i class="'+starclass+' star" id="USStar"></i>'+
+							'                <h2 class="USName">'+result.name+'</h2>'+
+							'                <p>'+result.exchangeCode+'</p>'+
+							'            </div>'+
+							'            <div class="USHeaderRight">'+
+							'                <h2 style="color: '+color+';">'+result.last+'</h2>'+
+							'                <div style="margin-top: 10px;">'+
+							'                    <i class="'+dir+'" style="color: '+color+';"></i>'+
+							'                    <span style="color: '+color+'; font-size: 26px;">'+change.toFixed(2)+' ('+pct.toFixed(2)+'%)</span>'+
+							'                </div>'+
+							'                <p>'+result.startDate+'</p>'+
+							'            </div>'+
+							'        </div>'+
+							'        <div>'+
+							'            <label for="Searchquantity">Quantity: </label>'+
+							'            <input type="number" min="1" id="Searchquantity" name="Searchquantity" style="width:40px;"><br>'+
+							'            <input type="button" name="submit" value="Buy" onclick="buySearch(\''+result.ticker+'\','+result.open+')" id="USBuy" class="USBuyButton">'+
+							'        </div>'+
+							'        <div class="USMarketDiv">'+
+							'            <mark class="MarketState Closed">Market Closed</mark>'+
+							'        </div>'+
+							'        <h5 class="center">Summary</h5>'+
+							'    <div class="UserResults">'+
+							'        <div class="UserStatsCol">'+
+							'            <div class="UserStatsLeft">'+
+							'                <p>High Price:</p>'+
+							'                <p>Low Price:</p>'+
+							'                <p>Open Price:</p>'+
+							'                <p>Close:</p>'+
+							'                <p>Volume:</p>'+
+							'            </div>'+
+							'            <div class="UserStatsRight">'+
+							'                <p>'+result.high+'</p>'+
+							'                <p>'+result.low+'</p>'+
+							'                <p>'+result.open+'</p>'+
+							'                <p>'+result.close+'</p>'+
+							'                <p>'+result.volume+'</p>'+
+							'            </div>'+
+							'        </div>'+
+							'		<div class="UserStatsCol">'+
+							
+							'       </div>'+
+							'    </div>'+
+							'        <h4 class="center">Company\'s Description</h4>'+
+							'        <p>Start Date: '+result.startDate+'</p>'+
+							'        <p>'+result.description+'</p>'+
+							'    </div>'
+						);
+				}
+				else{
+					$( "#searchresults" ).html(
+							'<div class="UserSearch">'+
+							'        <div class="USHeader">'+
+							'            <div class="USHeaderLeft">'+
+							'                <h2 class="USTicker" id="USTick">'+result.ticker+'</h2>'+
+							'                <i class="'+starclass+' star" id="USStar"></i>'+
+							'                <h2 class="USName">'+result.name+'</h2>'+
+							'                <p>'+result.exchangeCode+'</p>'+
+							'            </div>'+
+							'            <div class="USHeaderRight">'+
+							'                <h2 style="color: '+color+';">'+result.last+'</h2>'+
+							'				<div style="margin-top: 10px;">'+
+							'                    <i class="'+dir+'" style="color: '+color+';"></i>'+
+							'                    <span style="color: '+color+'; font-size: 26px;">'+change.toFixed(2)+' ('+pct.toFixed(2)+'%)</span>'+
+							'                </div>'+
+							'                <p>'+result.startDate+'</p>'+
+							'            </div>'+
+							'        </div>'+
+							'        <div>'+
+							'            <label for="Searchquantity">Quantity: </label>'+
+							'            <input type="number" min="1" id="Searchquantity" name="Searchquantity" style="width:40px;"><br>'+
+							'            <input type="button" name="submit" value="Buy" onclick="buySearch(\''+result.ticker+'\','+result.open+')" id="USBuy" class="USBuyButton">'+
+							'        </div>'+
+							'        <div class="USMarketDiv">'+
+							'            <mark class="MarketState Open" style="width: 200px;">Market is Open</mark>'+
+							'        </div>'+
+							'        <h5 class="center">Summary</h5>'+
+							'    <div class="UserResults">'+
+							'        <div class="UserStatsCol">'+
+							'            <div class="UserStatsLeft">'+
+							'                <p>High Price:</p>'+
+							'                <p>Low Price:</p>'+
+							'                <p>Open Price:</p>'+
+							'                <p>Close:</p>'+
+							'                <p>Volume:</p>'+
+							'            </div>'+
+							'            <div class="UserStatsRight">'+
+							'                <p>'+result.high+'</p>'+
+							'                <p>'+result.low+'</p>'+
+							'                <p>'+result.open+'</p>'+
+							'                <p>'+result.close+'</p>'+
+							'                <p>'+result.volume+'</p>'+
+							'            </div>'+
+							'        </div>'+
+							'        <div class="UserStatsCol">'+
+							'            <div class="UserStatsLeft">'+
+							'                <p>Mid Price:</p>'+
+							'                <p>Ask Price:</p>'+
+							'                <p>Ask Size:</p>'+
+							'                <p>Bid Price:</p>'+
+							'                <p>Bid Size:</p>'+
+							'            </div>'+
+							'            <div class="UserStatsRight">'+
+							'                <p>'+mid+'</p>'+
+							'                <p>'+result.askPrice+'</p>'+
+							'                <p>'+result.askSize+'</p>'+
+							'                <p>'+result.bidPrice+'</p>'+
+							'                <p>'+result.bidSize+'</p>'+
+							'            </div>'+
+							'        </div>'+
+							'    </div>'+
+							'        <h4 class="center">Company\'s Description</h4>'+
+							'        <p>Start Date: '+result.startDate+'</p>'+
+							'        <p>'+result.description+'</p>'+
+							'    </div>'
+						);
+				}
+				document.getElementById('USStar').onclick = favoriteToggle;
+			}
+		  }
+		});
+	}
+	function favoriteCard(tick){
+		var json1;
+		var x = document.cookie;
+		var id;
+		if(x.length === 37){
+			id = x.substring(19,20);
+		}
+		else{
+			id = x.substring(3,4);;
+		}
+		var starclass = "fa fa-star-o";
+		$.ajax({
+		  url: "GetFavorites",
+		  data: {
+		   userID: id,
+		  },
+		  dataType: 'json',
+		  async: false,
+		  success: function( result ) {
+			  var stocks = result.fv;
+			  for(var i=0; i<stocks.length; i++){
+				  var curr = stocks[i];
+				  alert(curr.ticker + ' ' + tick);
+				  if(curr.ticker == tick){
+					  alert('match');
+					  starclass = "fas fa-star";
+				  }
+			  }
+		  }
+		});
+		$.ajax({
+		  url: "TiingoServlet",
+		  data: {
+		    company: tick
+		  },
+		  dataType: 'json',
+		  success: function( result ) {
+			  document.getElementById("favnav").style.display = "inline";
+				document.getElementById("portnav").style.display = "inline";
+				document.getElementById("logoutnav").style.display = "inline";
+				document.getElementById("signupnav").style.display = "none";
+				document.getElementById("homepage").style.display = "none";
+				document.getElementById("loginsignup").style.display = "none";
+				document.getElementById("searchresults").style.display = "block";
+				document.getElementById("favoritesresults").style.display = "none";
+				document.getElementById("portfolioresults").style.display = "none";
+				document.getElementById("favnav").classList.remove("navborder");
+				document.getElementById("homenav").classList.add("navborder");
+				document.getElementById("signupnav").classList.remove("navborder");
+				document.getElementById("portnav").classList.remove("navborder");
+			if(x == ""){
+				$( "#searchresults" ).html(
+					"<h1 class=\"guestTick center\">"+result.ticker+"</h1>"+
+					"    <h1 class=\"guestName center\">"+result.name+"</h1>"+
+					"    <h5 class=\"guestExchange center\">"+result.exchangeCode+"</h5><br>"+
+					"    <h5 class=\"center\">Summary</h5>"+
+					"    <div class=\"guestResults\">"+
+					"        <div class=\"guestStats\">"+
+					"            <p>High Price: "+result.high+"</p>"+
+					"            <p>Low Price: "+result.low+"</p>"+
+					"            <p>Open Price: "+result.open+"</p>"+
+					"            <p>Close: "+result.close+"</p>"+
+					"            <p>Volume: "+result.volume+"</p>"+
+					"        </div><br>"+
+					"        <h4 class=\"center\">Company's Description</h4>"+
+					"        <p>Start Date: "+result.startDate+"</p>"+
+					"        <p>"+result.description+"</p>"+
+					"    </div>"
+				);
+			}
+			else{
+				var change = result.last - result.prevClose;
+				var pct = change*100 / result.prevClose
+				var ask = result.askPrice;
+				var dir="";
+				var color="";
+				if(change < 0){
+					color = "red";
+					dir = "fas fa-caret-down";
+				}
+				else{
+					color="green";
+					dir="fas fa-caret-up";
+				}
+				if(ask == 0 || ask == null){
+					$( "#searchresults" ).html(
+							'<div class="UserSearch">'+
+							'        <div class="USHeader">'+
+							'            <div class="USHeaderLeft">'+
+							'                <h2 class="USTicker" id="USTick">'+result.ticker+'</h2>'+
+							'                <i class="'+starclass+' star" id="USStar"></i>'+
+							'                <h2 class="USName">'+result.name+'</h2>'+
+							'                <p>'+result.exchangeCode+'</p>'+
+							'            </div>'+
+							'            <div class="USHeaderRight">'+
+							'                <h2 style="color: '+color+';">'+result.last+'</h2>'+
+							'                <div style="margin-top: 10px;">'+
+							'                    <i class="'+dir+'" style="color: '+color+';"></i>'+
+							'                    <span style="color: '+color+'; font-size: 26px;">'+change.toFixed(2)+' ('+pct.toFixed(2)+'%)</span>'+
+							'                </div>'+
+							'                <p>'+result.startDate+'</p>'+
+							'            </div>'+
+							'        </div>'+
+							'        <div>'+
+							'            <label for="Searchquantity">Quantity: </label>'+
+							'            <input type="number" min="1" id="Searchquantity" name="Searchquantity" style="width:40px;"><br>'+
+							'            <input type="button" name="submit" value="Buy" onclick="buySearch(\''+result.ticker+'\','+result.open+')" id="USBuy" class="USBuyButton">'+
+							'        </div>'+
+							'        <div class="USMarketDiv">'+
+							'            <mark class="MarketState Closed">Market Closed</mark>'+
+							'        </div>'+
+							'        <h5 class="center">Summary</h5>'+
+							'    <div class="UserResults">'+
+							'        <div class="UserStatsCol">'+
+							'            <div class="UserStatsLeft">'+
+							'                <p>High Price:</p>'+
+							'                <p>Low Price:</p>'+
+							'                <p>Open Price:</p>'+
+							'                <p>Close:</p>'+
+							'                <p>Volume:</p>'+
+							'            </div>'+
+							'            <div class="UserStatsRight">'+
+							'                <p>'+result.high+'</p>'+
+							'                <p>'+result.low+'</p>'+
+							'                <p>'+result.open+'</p>'+
+							'                <p>'+result.close+'</p>'+
+							'                <p>'+result.volume+'</p>'+
+							'            </div>'+
+							'        </div>'+
+							'		<div class="UserStatsCol">'+
+							
+							'       </div>'+
+							'    </div>'+
+							'        <h4 class="center">Company\'s Description</h4>'+
+							'        <p>Start Date: '+result.startDate+'</p>'+
+							'        <p>'+result.description+'</p>'+
+							'    </div>'
+						);
+				}
+				else{
+					$( "#searchresults" ).html(
+							'<div class="UserSearch">'+
+							'        <div class="USHeader">'+
+							'            <div class="USHeaderLeft">'+
+							'                <h2 class="USTicker" id="USTick">'+result.ticker+'</h2>'+
+							'                <i class="'+starclass+' star" id="USStar"></i>'+
+							'                <h2 class="USName">'+result.name+'</h2>'+
+							'                <p>'+result.exchangeCode+'</p>'+
+							'            </div>'+
+							'            <div class="USHeaderRight">'+
+							'                <h2 style="color: '+color+';">'+result.last+'</h2>'+
+							'				<div style="margin-top: 10px;">'+
+							'                    <i class="'+dir+'" style="color: '+color+';"></i>'+
+							'                    <span style="color: '+color+'; font-size: 26px;">'+change.toFixed(2)+' ('+pct.toFixed(2)+'%)</span>'+
+							'                </div>'+
+							'                <p>'+result.startDate+'</p>'+
+							'            </div>'+
+							'        </div>'+
+							'        <div>'+
+							'            <label for="Searchquantity">Quantity: </label>'+
+							'            <input type="number" min="1" id="Searchquantity" name="Searchquantity" style="width:40px;"><br>'+
+							'            <input type="button" name="submit" value="Buy" onclick="buySearch(\''+result.ticker+'\','+result.open+')" id="USBuy" class="USBuyButton">'+
+							'        </div>'+
+							'        <div class="USMarketDiv">'+
+							'            <mark class="MarketState Open" style="width: 200px;">Market is Open</mark>'+
+							'        </div>'+
+							'        <h5 class="center">Summary</h5>'+
+							'    <div class="UserResults">'+
+							'        <div class="UserStatsCol">'+
+							'            <div class="UserStatsLeft">'+
+							'                <p>High Price:</p>'+
+							'                <p>Low Price:</p>'+
+							'                <p>Open Price:</p>'+
+							'                <p>Close:</p>'+
+							'                <p>Volume:</p>'+
+							'            </div>'+
+							'            <div class="UserStatsRight">'+
+							'                <p>'+result.high+'</p>'+
+							'                <p>'+result.low+'</p>'+
+							'                <p>'+result.open+'</p>'+
+							'                <p>'+result.close+'</p>'+
+							'                <p>'+result.volume+'</p>'+
+							'            </div>'+
+							'        </div>'+
+							'        <div class="UserStatsCol">'+
+							'            <div class="UserStatsLeft">'+
+							'                <p>Mid Price:</p>'+
+							'                <p>Ask Price:</p>'+
+							'                <p>Ask Size:</p>'+
+							'                <p>Bid Price:</p>'+
+							'                <p>Bid Size:</p>'+
+							'            </div>'+
+							'            <div class="UserStatsRight">'+
+							'                <p>2017</p>'+
+							'                <p>'+result.askPrice+'</p>'+
+							'                <p>'+result.askSize+'</p>'+
+							'                <p>'+result.bidPrice+'</p>'+
+							'                <p>'+result.bidSize+'</p>'+
+							'            </div>'+
+							'        </div>'+
+							'    </div>'+
+							'        <h4 class="center">Company\'s Description</h4>'+
+							'        <p>Start Date: '+result.startDate+'</p>'+
+							'        <p>'+result.description+'</p>'+
+							'    </div>'
+						);
+				}
+				document.getElementById('USStar').onclick = favoriteToggle;
+			}
+		  }
+		});
+	}
+	
+	
+	
+	function displayFavorites(){
+		
+		var x = document.cookie;
+		var id;
+		if(x.length === 37){
+			id = x.substring(19,20);
+		}
+		else{
+			id = x.substring(3,4);;
+		}
+		$.ajax({
+			  url: "GetFavorites",
+			  data: {
+				userID: id
+			  },
+			  dataType: 'json',
+			  success: function( result ) {
+				if(result.valid){
+					document.getElementById("favnav").classList.add("navborder");
+					document.getElementById("homenav").classList.remove("navborder");
+					document.getElementById("signupnav").classList.remove("navborder");
+					document.getElementById("portnav").classList.remove("navborder");
+					document.getElementById("favoritesresults").style.display = "block";
+					document.getElementById("homepage").style.display = "none";
+					document.getElementById("portfolioresults").style.display = "none";
+					document.getElementById("searchresults").style.display = "none";
+					document.getElementById("favoritesresults").innerHTML = "";
+					var stocks = result.fv;
+					$("#favoritesresults").append("<h2 class=\"center\">My Favorites<\h2>");
+					if(stocks.length == 0){
+						alert('Currently you don\'t have any stocks in your favorites');
+						return;
+					}
+					
+					for(i=0; i<stocks.length; i++){
+						var fav = stocks[i];
+						var color = "";
+						var dir = "";
+						var diff = fav.lastprice-fav.prevclose;
+						var last = fav.lastprice;
+						if(diff < 0){
+							color = "red";
+							dir = "fas fa-caret-down";
+						}
+						else{
+							color="green";
+							dir="fas fa-caret-up";
+						}
+						var pct = (diff*100)/(fav.prevclose);
+						$("#favoritesresults").append(
+								"<div class=\"favorites\">"+
+								"		<div class=\"left\" onclick=\"favoriteCard('"+fav.ticker+"')\">"+
+								"            <p>"+fav.ticker+"</p>"+
+								"            <p>"+fav.name+"</p>"+
+								"        </div>"+
+								"		<div class=\"right\">"+
+								"            <i class=\"fas fa-times\" onclick=\"xfavorite('"+fav.ticker+"')\"></i>"+
+							    "            <p style=\"color: "+color+";\" onclick=\"favoriteCard('"+fav.ticker+"')\">"+fav.lastprice+"</p>"+
+								"			 <div style=\"margin-top: 10px;\" onclick=\"favoriteCard('"+fav.ticker+"')\">"+
+								"                <i class=\""+dir+"\" style=\"color: "+color+";\"></i>"+
+								"                <span style=\"color: "+color+";\">"+diff.toFixed(2)+" ("+pct.toFixed(2)+"%)</span>"+
+								"            </div>"+						
+								"        </div>"+
+								"	</div>"
+						);
+					}
+				}
+			  }
+			});
+	}
+	function xfavorite(comp){
+		var x = document.cookie;
+		var id;
+		if(x.length === 37){
+			id = x.substring(19,20);
+		}
+		else{
+			id = x.substring(3,4);;
+		}
+		$.ajax({
+		  url: "UnfavoriteServlet",
+		  data: {
+		   userID: id,
+		   company: comp
+		  },
+		  dataType: 'text',
+		  success: function( result ) {
+			  alert(result);
+			  displayFavorites();
+		  }
+		});	
+	}
+	function displayPortfolio(){
+		var x = document.cookie;
+		var id;
+		if(x.length === 37){
+			id = x.substring(19,20);
+		}
+		else{
+			id = x.substring(3,4);;
+		}
+		$.ajax({
+			  url: "PortfolioServlet",
+			  data: {
+				userID: id
+			  },
+			  dataType: 'json',
+			  success: function( result ) {
+				if(result.valid){
+					document.getElementById("favnav").classList.remove("navborder");
+					document.getElementById("homenav").classList.remove("navborder");
+					document.getElementById("signupnav").classList.remove("navborder");
+					document.getElementById("portnav").classList.add("navborder");
+					document.getElementById("homepage").style.display = "none";
+					document.getElementById("loginsignup").style.display = "none";
+					document.getElementById("searchresults").style.display = "none";
+					document.getElementById("favoritesresults").style.display = "none";
+					document.getElementById("portfolioresults").style.display = "block";
+					document.getElementById("portfolioresults").innerHTML = "";
+					$("#portfolioresults").append("<h2 class=\"center\">My Portfolio<\h2>");
+					$("#portfolioresults").append("<h5 class=\"center\">Cash Balance: "+result.balance+"<\h2>");
+					$("#portfolioresults").append("<h5 class=\"center\">Total Account Value: "+result.value+"<\h2>");
+					var port = result.fv;
+					for(i=0; i<port.length; i++){
+						var element = port[i];
+						var dir = "";
+						var color = "";
+						if(element.change < 0){
+							color = "red";
+							dir = "fas fa-caret-down";
+						}
+						else{
+							color = "green";
+							dir="fas fa-caret-up"
+						}
+						
+						$("#portfolioresults").append(
+								"<div class=\"portElement\">"+
+								"        <div class=\"port1\">"+
+								"            <div class=\"portticker\">"+
+								"                <span>"+element.ticker+"</span><span>"+element.name+"</span>"+
+								"            </div>"+
+								"        </div>"+
+								"        <div class=\"port2\">"+
+								"            <div class=\"portcol\">"+
+								"`               <div class=\"portleft\">"+
+								"                    <p>Quantity:</p>"+
+								"                    <p>Avg. Cost / Share:</p>"+
+								"                    <p>Total Cost:</p>"+
+								"                </div>"+
+								"                <div class=\"portright\">"+
+								"                    <p>"+element.quantity+"</p>"+
+								"                    <p>"+element.averageCost+"</p>"+
+								"                    <p>"+element.totalCost+"</p>"+
+								"                </div>"+
+								"            </div>"+
+								"            <div class=\"portcol\">"+
+								"                <div class=\"portleft\">"+
+								"                    <p>Change:</p>"+
+								"                    <p>Current Price:</p>"+
+								"                    <p>Market Value:</p>"+
+								"                </div>"+
+								"                <div class=\"portright\">"+
+								"                    <div style=\"margin-top: 10px;\">"+
+										"                <i class=\""+dir+"\" style=\"color: "+color+";\"></i>"+
+										"                <span style=\"color: "+color+";\">"+element.change.toFixed(2)+"</span>"+
+										"            </div>"+
+								"                    <p>"+element.currValue+"</p>"+
+								"                    <p>"+element.marketValue+"</p>"+
+								"                </div>"+
+								"            </div>"+
+								"        </div>"+
+								"        <div class=\"port3\">"+
+								"            <form action=\"GET\">"+
+								"                <div>"+
+								"                    <label for=\"quantity\">Quantity: </label>"+
+								"                    <input type=\"number\" id=\""+element.ticker+"\" min=\"1\" name=\"quantity\" style=\"width:40px;\">"+
+								"                </div>"+
+								"                <div>"+
+								"                    <div class=\"portradio\">"+
+								"                        <input type=\"radio\" value=\"buy\" name=\"radiobuysell\">"+
+								"                         <label for=\"buy\">BUY</label>"+
+								"                    </div>"+
+								"                    <div class=\"portradio\">"+
+								"                        <input type=\"radio\" value=\"sell\" name=\"radiobuysell\">"+
+								"                        <label for=\"sell\">SELL</label>"+
+								"                    </div>"+
+								"                </div>"+
+								"                <input type=\"button\" value=\"Submit\" onclick=\"portBuySell('"+element.ticker+"', '"+element.currValue+"')\">"+
+								"            </form>"+
+								"        </div>"+
+								"    </div>"
+						);
+					}
+				}
+			  }
+			});
+		}	
+		function displayLoginSignup(){
+			document.getElementById("favnav").classList.remove("navborder");
+			document.getElementById("homenav").classList.remove("navborder");
+			document.getElementById("signupnav").classList.add("navborder");
+			document.getElementById("portnav").classList.remove("navborder");
+			document.getElementById("homepage").style.display = "none";
+			document.getElementById("loginsignup").style.display = "block";
+			document.getElementById("searchresults").style.display = "none";
+			document.getElementById("favoritesresults").style.display = "none";
+			document.getElementById("portfolioresults").style.display = "none";
+			
+			document.getElementById("loginsignup").innerHTML = "<div class=\"signlog\">"+
+			"        <div id=\"login\" class=\"SLcolumn\">"+
+			"            <form action=\"\" name=\"login\" class=\"SLForm\">"+
+			"                <h3>Login</h3>"+
+			"                <label for=\"user\">Username</label>"+
+			"                <input type=\"text\" id=\"user\">"+
+			"                <label for=\"pw\">Password</label>"+
+			"                <input type=\"password\" id=\"pw\">"+
+			"                <div class=\"SLbutton\" onclick=\"hello()\">"+
+			"                    <i class=\"fas fa-sign-in-alt\"></i>"+
+			"                    <input type=\"button\" class=\"SLbutton\" value=\"Sign in\">"+
+			"                </div>"+
+			"            </form>"+
+			"            <div class=\"g-signin2\" data-onsuccess=\"onSignIn\"></div>"+
+			"            <div id=\"loginmessage\"></div>"+
+			"        </div>"+
+			"        <div id=\"signup\" class=\"SLcolumn\">"+
+			"            <form action=\"\" name=\"signup\" class=\"SLForm\">"+
+			"                <h3>Sign Up</h3>"+
+			"                <label for=\"email\">Email</label>"+
+			"                <input type=\"email\" id=\"email\">"+
+			"                <label for=\"signuser\">Username</label>"+
+			"                <input type=\"text\" id=\"signuser\">"+
+			"                <label for=\"signpw\">Password</label>"+
+			"                <input type=\"password\" id=\"signpw\">"+
+			"                <label for=\"pw2\">Confirm Password</label>"+
+			"                <input type=\"password\" id=\"pw2\">"+
+			"                <div class=\"SLcheck\">"+
+			"                    <span for=\"agree\" id=\"agreelabel\">I have read and agreed to all terms and conditions of SalStocks</span>"+
+			"                    <input type=\"checkbox\" id=\"agree\" required>"+
+			"                </div>"+
+			"                <div class=\"SLbutton\" onclick=\"hello2()\">"+
+			"                    <i class=\"fas fa-user-plus\"></i>"+
+			"                    <input type=\"button\" class=\"SLbutton\" value=\"Create Account\"> "+
+			"                </div>"+
+			"            </form>   "+
+			"            <div id=\"signupmessage\"></div>  "+
+			"        </div>"+
+			"    </div>";
+			/* document.getElementById('loginBut').onclick = login;
+			document.getElementById('signupBut').onclick = signup; */
+		}
+		function displayHomePage(){
+			document.getElementById("favnav").classList.remove("navborder");
+			document.getElementById("homenav").classList.add("navborder");
+			document.getElementById("signupnav").classList.remove("navborder");
+			document.getElementById("portnav").classList.remove("navborder");
+			document.getElementById("homepage").style.display = "block";
+			document.getElementById("loginsignup").style.display = "none";
+			document.getElementById("searchresults").style.display = "none";
+			document.getElementById("favoritesresults").style.display = "none";
+			document.getElementById("portfolioresults").style.display = "none";
+		}
+		
+</script>
+<script src="https://apis.google.com/js/platform.js" async defer></script>
+</head>
+<body onload="initialSignOut()">
+	<header>
+		<span style="font-weight: bold;" id="logo"><a onclick="displayHomePage()">SalStocks</a></span>
+		<nav>
+			<span class="navbutton navborder" id="homenav"><a onclick="displayHomePage()">Home/Search</a></span>
+			<span class="navbutton" id="signupnav"><a onclick="displayLoginSignup()">Login/Sign Up</a></span>
+			<span class="navbutton" id="favnav" style="display:none;"><a onclick="displayFavorites()">Favorites</a></span>
+			<span class="navbutton" id="portnav" style="display:none;"><a onclick="displayPortfolio()">Portfolio</a></span>
+			<span class="navbutton" id="logoutnav" style="display:none;"><a onclick="logout()">Logout</a></span>
+		</nav>
+	</header>
+	<div id="homepage">
+		<div class="title">
+		<h1 id="AppTitle">STOCK SEARCH</h1>
+		</div>
+		<div id="SearchForm">
+		<form name = "search" method="GET" onsubmit="displayResults()">
+			<input type="text" name="company" placeholder="Enter Stock Ticker">
+			<button type="button" onclick="displayResults()"><i class="fas fa-search"></i></button>
+		</form>
+		</div>
+		<div id="GoogleDiv">
+			<div class="g-signin2" data-onsuccess="onSignIn"></div>
+		</div>
+		
+	</div>
+	<div id="loginsignup" style="display:none;">
+	</div>
+	<div id="searchresults"></div>
+	<div id="favoritesresults"></div>
+	<div id="portfolioresults"></div>
+
+</body>
+</html>

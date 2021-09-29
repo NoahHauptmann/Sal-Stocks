@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Log in/Sign up!</title>
+<link rel="stylesheet" href="./resources/css/login_signup.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://kit.fontawesome.com/2124adb6e5.js" crossorigin="anonymous"></script>
+<script>
+	function login(){
+		$.ajax({
+		  url: "LoginServlet",
+		  data: {
+		    username: document.login.user.value,
+		    password: document.login.pw.value
+		  },
+		  dataType: 'json',
+		  success: function( result ) {
+			  $( "#loginmessage" ).html(result.message);
+		  }
+		});
+	}
+	function signup(){
+		$.ajax({
+		  url: "SignupServlet",
+		  data: {
+			email: document.signup.email.value,
+			username: document.signup.user.value,
+			password: document.signup.pw.value
+		  },
+		  dataType: 'json',
+		  success: function( result ) {
+			  $( "#signupmessage" ).html(result.message);
+		  }
+		});
+	}
+</script>
+</head>
+<body>
+    <header>
+		<span style="font-weight: bold;">SalStocks</span>
+		<nav>
+			<span class="navbutton">Home/Search</span>
+			<span class="navbutton">Login/Sign Up</span>
+		</nav>
+	</header>
+    <div class="flex-container signlog">
+        <div id="login" class="column">
+            <form action="" name="login">
+                <label for="user">Username</label>
+                <input type="text" id="user">
+                <label for="pw">Password</label>
+                <input type="password" id="pw">
+                <input type="submit">
+            </form>
+            <div id="google"><a href="">Sign In with Google</a></div>
+            <div id="loginmessage"></div>
+        </div>
+        <div id="signup" class="column">
+            <form action="" name="signup">
+                <label for="email">Email</label>
+                <input type="email" id="email">
+                <label for="user">Username</label>
+                <input type="text" id="user">
+                <label for="pw">Password</label>
+                <input type="password" id="pw">
+                <label for="pw2">Confirm Password</label>
+                <input type="password" id="pw2">
+                <input type="checkbox" id="agree"><span>I have read and agreed to all terms and conditions of SalStocks</span>
+                <input type="submit">
+            </form>   
+            <div id="signupmessage"></div>  
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Portfolio</title>
+<link rel="stylesheet" href="./resources/css/portfolioElement.css">
+<script src="https://kit.fontawesome.com/2124adb6e5.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="portElement">
+        <div class="port1">
+            <div class="portticker">
+                <span>AAPL</span><span>Apple Inc</span>
+            </div>
+        </div>
+        <div class="port2">
+            <div class="portcol">
+`               <div class="portleft">
+                    <p>Quantity:</p>
+                    <p>Avg. Cost / Share:</p>
+                    <p>Total Cost:</p>
+                </div>
+                <div class="portright">
+                    <p>2</p>
+                    <p>123.10</p>
+                    <p>246.20</p>
+                </div>
+            </div>
+            <div class="portcol">
+                <div class="portleft">
+                    <p>Change:</p>
+                    <p>Current Price:</p>
+                    <p>Market Value:</p>
+                </div>
+                <div class="portright">
+                    <div style="margin-top: 10px;">
+                        <i class="fas fa-caret-up" style="color: green;"></i>
+                        <span style="color: green;">2,000</span>
+                    </div>
+                    <p>123.18</p>
+                    <p>123.18</p>
+                    <p>246.36</p>
+                </div>
+            </div>
+        </div>
+        <div class="port3">
+            <form action="GET">
+                <form>
+                    <label for="quantity">Quantity: </label>
+                    <input type="number" min="1" id="quantity" name="quantity" style="width:40px;"><br>
+                </form>
+                <div>
+                    <div class="portradio">
+                        <input type="radio" value="buy" name="buy" id="buy">
+                         <label for="buy">BUY</label>
+                    </div>
+                    <div class="portradio">
+                        <input type="radio" value="sell" name="sell" id="sell">
+                        <label for="sell">SELL</label>
+                    </div>
+                </div>
+                <input type="submit" value="Submit">
+            </form>
+        </div>
+    </div>
+</body>
+</html>

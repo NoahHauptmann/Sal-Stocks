@@ -1,0 +1,22 @@
+@charset "UTF-8";
+
+.favorites {
+	height: 100px;
+	width: 60%;
+	margin: 15px auto;
+	display: flex;
+	justify-content: center;
+	border: 1px grey solid;
+	border-radius: 1px;
+}
+.left {
+	flex-grow: 1;
+	text-align: left;
+	padding-left: 10px;
+}
+.right {
+	flex-grow: 1;
+	text-align: right;
+	padding-right: 10px;
+	padding-top: 10px;
+}
